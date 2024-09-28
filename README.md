@@ -6,7 +6,7 @@ I'm excited to share that I’ve successfully completed my raycasting project, s
 
 # Table of Contents
 
-- [Player Initialization and Movement](#Player_Initialization_and_Movement)
+- [Player Initialization and Movement](#Player-Initialization-and-Movement)
 - [Raycasting Mechanics](#Raycasting_Mechanics)
   - [Horizontal and Vertical Intersections](#Horizontal_and_Vertical_Intersections)
   - [Distance Calculation and Fisheye Correction](#Distance_Calculation_and_Fisheye_Correction)
