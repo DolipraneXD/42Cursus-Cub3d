@@ -16,7 +16,7 @@ I'm excited to share that I’ve successfully completed my raycasting project, s
   - [Texture Mapping](#Texture_Mapping)
 
 
-**1) Player Initialization and Movement**
+## Player Initialization and Movement
 
 The player in the game world is represented by coordinates (x, y) starting position, movement parameters, and initial rotation based on the map and direction they’re facing.
 ```c
