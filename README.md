@@ -4,7 +4,7 @@
 
 I'm excited to share that I’ve successfully completed my raycasting project, scoring a perfect 125/125! This project provided a deep dive into the mathematical principles of computer graphics, particularly focused on raycasting using angles. Below, I’ll share the detailed breakdown of how I used angles to bring this project to life.
 
-Table of Contents
+**Table of Contents**
 
     1️⃣ Player Initialization and Movement
     2️⃣ Raycasting Mechanics
@@ -14,7 +14,7 @@ Table of Contents
     4️⃣ Rendering Walls
             Wall Height and Projection
             Texture Mapping
-1. Player Initialization and Movement
+**1) Player Initialization and Movement**
 
 The player in the game world is represented by coordinates (x, y) starting position, movement parameters, and initial rotation based on the map and direction they’re facing.
 ```c
