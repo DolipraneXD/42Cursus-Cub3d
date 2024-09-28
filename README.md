@@ -74,14 +74,14 @@ This ensures that every frame the player turns in the specified direction at a c
 ```c
 window->player.rotation_angle += (window->player.turn_direction * window->player.turn_speed);
 ```
-2. Calculating Movement Steps\
+**b- Calculating Movement Steps**
 walk_direction controls forward and backward movement, where 1 moves forward and -1 moves backward. This value is multiplied by walk_speed to determine how much the player moves forward or backward per update.\
 strafe_direction works similarly but controls movement sideways (strafing), where 1 moves right and -1 moves left.
 ```c
 move_step = window->player.walk_direction * window->player.walk_speed;
 strafe_step = window->player.strafe_direction * window->player.walk_speed;
 ```
-**b- Calculating the New Position**
+**c- Calculating the New Position**
 
     Trigonometry is used to calculate the new position of the player based on their current rotation and movement inputs.\
     The cos and sin functions take the player's rotation_angle to adjust the player's movement relative to their current orientation:\
