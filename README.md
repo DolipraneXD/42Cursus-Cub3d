@@ -67,6 +67,7 @@ else if (keydata.key == MLX_KEY_LEFT)
     player_direction(keydata, &window->player.turn_direction, -1);
 ```
 **a- Updating Rotation Angle**
+
 turn_direction can be 1 (turning right) or -1 (turning left), and turn_speed determines how fast the player rotates.
 The player's rotation angle is updated by adding or subtracting the product of turn_direction and turn_speed.
 This ensures that every frame the player turns in the specified direction at a constant speed, making the gameplay feel smooth.
@@ -81,6 +82,7 @@ move_step = window->player.walk_direction * window->player.walk_speed;
 strafe_step = window->player.strafe_direction * window->player.walk_speed;
 ```
 **b- Calculating the New Position**
+
     Trigonometry is used to calculate the new position of the player based on their current rotation and movement inputs.\
     The cos and sin functions take the player's rotation_angle to adjust the player's movement relative to their current orientation:\
         cos(rotation_angle) * move_step moves the player forward/backward along the x-axis.\
