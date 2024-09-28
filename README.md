@@ -66,7 +66,7 @@ else if (keydata.key == MLX_KEY_RIGHT)
 else if (keydata.key == MLX_KEY_LEFT)
     player_direction(keydata, &window->player.turn_direction, -1);
 ```
-1. Updating Rotation Angle
+**a- Updating Rotation Angle**
 turn_direction can be 1 (turning right) or -1 (turning left), and turn_speed determines how fast the player rotates.
 The player's rotation angle is updated by adding or subtracting the product of turn_direction and turn_speed.
 This ensures that every frame the player turns in the specified direction at a constant speed, making the gameplay feel smooth.
@@ -80,7 +80,7 @@ strafe_direction works similarly but controls movement sideways (strafing), wher
 move_step = window->player.walk_direction * window->player.walk_speed;
 strafe_step = window->player.strafe_direction * window->player.walk_speed;
 ```
-3. Calculating the New Position\
+**b- Calculating the New Position**
     Trigonometry is used to calculate the new position of the player based on their current rotation and movement inputs.\
     The cos and sin functions take the player's rotation_angle to adjust the player's movement relative to their current orientation:\
         cos(rotation_angle) * move_step moves the player forward/backward along the x-axis.\
@@ -102,7 +102,7 @@ Player Movement Directions:\
     Left/Right Strafing (strafe_step):
     Strafing refers to moving left or right relative to the player's current direction. This is different from turning and walking forward; strafing means shifting sideways.
 
-Understanding the Math\
+**Mathematical concepts**
 
     Forward/Backward Movement (Using Cosine and Sine):
         The player's movement is dependent on the direction they are facing, which is described by rotation_angle. To calculate how much the player moves forward or backward in the X and Y directions, we use the trigonometric functions cos (cosine) and sin (sine).
@@ -122,13 +122,13 @@ Understanding the Math\
             Y Movement (Strafing):
             Similarly, the Y movement is calculated by multiplying cos(rotation_angle) with strafe_step.
 
-Combining the Two:\
+**Combining the Two**
 
     The new position (new_x, new_y) is calculated by adding forward/backward movement and subtracting/adding strafe movement.
         new_x combines the forward/backward X movement with the left/right strafing X movement.
         new_y combines the forward/backward Y movement with the left/right strafing Y movement.
 
-Why Use Cosine and Sine?\
+**Why Use Cosine and Sine?**
 
 In a circular motion (or rotation), the cosine and sine functions are used to break down movement along an angle into its horizontal (X) and vertical (Y) components. By using the player's rotation angle:\
 
