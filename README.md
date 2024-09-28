@@ -4,16 +4,18 @@
 
 I'm excited to share that I’ve successfully completed my raycasting project, scoring a perfect 125/125! This project provided a deep dive into the mathematical principles of computer graphics, particularly focused on raycasting using angles. Below, I’ll share the detailed breakdown of how I used angles to bring this project to life.
 
-**Table of Contents**
+# Table of Contents
 
-    1️⃣ Player Initialization and Movement
-    2️⃣ Raycasting Mechanics
-            Horizontal and Vertical Intersections
-            Distance Calculation and Fisheye Correction
-    3️⃣ Floor and Ceiling Rendering
-    4️⃣ Rendering Walls
-            Wall Height and Projection
-            Texture Mapping
+- [Player Initialization and Movement](#Player_Initialization_and_Movement)
+- [Raycasting Mechanics](#Raycasting_Mechanics)
+  - [Horizontal and Vertical Intersections](#Horizontal_and_Vertical_Intersections)
+  - [Distance Calculation and Fisheye Correction](#Distance_Calculation_and_Fisheye_Correction)
+- [Floor and Ceiling Rendering](#Floor_and_Ceiling_Rendering)
+- [Rendering Walls](#Rendering_Walls)
+  - [Wall Height and Projection](#Wall_Height_and_Projection)
+  - [Texture Mapping](#Texture_Mapping)
+
+
 **1) Player Initialization and Movement**
 
 The player in the game world is represented by coordinates (x, y) starting position, movement parameters, and initial rotation based on the map and direction they’re facing.
@@ -75,6 +77,7 @@ This ensures that every frame the player turns in the specified direction at a c
 window->player.rotation_angle += (window->player.turn_direction * window->player.turn_speed);
 ```
 **b- Calculating Movement Steps**
+
 walk_direction controls forward and backward movement, where 1 moves forward and -1 moves backward. This value is multiplied by walk_speed to determine how much the player moves forward or backward per update.\
 strafe_direction works similarly but controls movement sideways (strafing), where 1 moves right and -1 moves left.
 ```c
