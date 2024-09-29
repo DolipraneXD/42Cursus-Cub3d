@@ -139,9 +139,134 @@ Player Movement Directions:\
 
 **Why Use Cosine and Sine?**
 
-In a circular motion (or rotation), the cosine and sine functions are used to break down movement along an angle into its horizontal (X) and vertical (Y) components. By using the player's rotation angle:\
+In a circular motion (or rotation), the cosine and sine functions are used to break down movement along an angle into its horizontal (X) and vertical (Y) components. By using the player's rotation angle:
 
     cos(rotation_angle) gives the proportion of movement along the X-axis.
     sin(rotation_angle) gives the proportion of movement along the Y-axis.
 
 By combining these calculations, the player can move in any direction depending on their orientation, providing realistic movement mechanics in the 2D space.\
+
+##Rendering Walls
+Wall_Height_and_Projection\
+
+In this raycasting, the wall rendering process follows a series of calculations and steps to accurately draw walls based on the player's perspective. This explanation breaks down the steps involved in rendering walls in a 3D environment:\
+1. Correcting the Distance for Fisheye Effect\
+
+When casting rays, the distance calculated for each ray needs to be adjusted to account for the fisheye effect. The calculate_correct_distance function multiplies the distance by the cosine of the difference between the ray’s angle and the player’s rotation angle:
+```c
+void calculate_correct_distance(t_window *window, int i)
+{
+    window->ray_list[i].distance *= cos(window->ray_list[i].ray_angle - window->player.rotation_angle);
+}
+```
+This ensures that walls further to the sides of the player's view aren't artificially elongated, maintaining the correct perspective.\
+
+2. Calculating Wall Strip Dimensions\
+
+Each ray represents a vertical strip on the screen. The height of this strip is determined by the distance to the wall. To calculate the vertical position of the top and bottom of each wall strip, we use the following formulas:
+```c
+double calculate_wall_top_pixel(double wall_strip_height)
+{
+    return (HEIGHT / 2) - (wall_strip_height / 2);
+}
+
+double calculate_wall_bottom_pixel(double wall_strip_height)
+{
+    return (HEIGHT / 2) + (wall_strip_height / 2);
+}
+```
+The calculate_wall_top_pixel function determines where the top of the wall should be drawn, based on the screen height.\
+Similarly, calculate_wall_bottom_pixel determines the bottom position. This centers the wall vertically on the screen.\
+
+3. Determining Wall Direction\
+
+The texture that gets mapped onto the wall depends on the direction the wall is facing. The get_wall_direction function determines whether the wall is facing north, south, east, or west, and also checks if the wall hit is horizontal or vertical:
+```c
+int get_wall_direction(t_ray *ray)
+{
+    if (ray->is_door)
+        return DOOR;
+    if (ray->was_hit_horz)
+    {
+        if (ray->is_facing_up)
+            return NORTH;
+        else
+            return SOUTH;
+    }
+    else
+    {
+        if (ray->is_facing_left)
+            return WEST;
+        else
+            return EAST;
+    }
+}
+```
+This helps in selecting the correct texture for rendering based on the wall’s direction and whether it was hit horizontally or vertically.\
+
+4. Mapping Textures to Walls\
+
+To ensure the texture aligns properly with the wall, we calculate the initial X-coordinate (init_x) where the wall texture starts, and then calculate the corresponding texture pixel to draw:
+```c
+double get_initial_x(t_ray *ray)
+{
+    if (ray->was_hit_horz)
+        return ((int)ray->wall_hit_x % TILE_SIZE);
+    else
+        return ((int)ray->wall_hit_y % TILE_SIZE);
+}
+```
+Depending on whether the wall was hit horizontally or vertically, this function calculates the correct starting X-coordinate for the texture.\
+
+5. Rendering the Wall Strip\
+
+The render_wall_strip function takes the calculated values and draws the wall strip for each ray. It loops through each pixel on the screen from the top of the wall to the bottom, fetching the correct texture pixel and drawing it to the screen:
+```c
+void render_wall_strip(t_window *window, double wall_top_pixel, double wall_bottom_pixel, double wall_strip_height)
+{
+    double init_x = get_initial_x(&window->ray_list[window->ray_index]);
+    uint32_t texture_x = init_x * (window->texture[window->direction]->width / TILE_SIZE);
+    double init_y = wall_top_pixel;
+    int y = (int)round(wall_top_pixel);
+
+    while (y <= wall_bottom_pixel)
+    {
+        if (window->ray_index >= 0 && window->ray_index < WIDTH && y >= 0 && y < HEIGHT)
+        {
+            uint32_t texture_y = (uint32_t)(y - init_y) * (window->texture[window->direction]->height / wall_strip_height);
+            mlx_put_pixel(window->img, round(window->ray_index), round(y), get_pixel_color(window->texture[window->direction], texture_x, texture_y));
+        }
+        y++;
+    }
+}
+```
+This function calculates the texture’s X and Y coordinates and maps them onto the correct screen pixels, ensuring the texture is applied smoothly across the vertical strip.\
+
+6. Main Wall Rendering Loop\
+
+The render_walls function iterates over every vertical strip (each ray cast from the player's viewpoint) and calculates the appropriate wall height, top, and bottom pixel positions, as well as the correct texture to use. It then calls render_wall_strip to draw each wall segment on the screen:
+```c
+void render_walls(t_window *window)
+{
+    int i = 0;
+    window->ray_index = 0;
+
+    while (i < WIDTH)
+    {
+        window->ray_index = i;
+        calculate_correct_distance(window, i);
+        double wall_strip_height = get_wall_height(window, i);
+        double wall_top_pixel = calculate_wall_top_pixel(wall_strip_height);
+        double wall_bottom_pixel = calculate_wall_bottom_pixel(wall_strip_height);
+        window->direction = get_wall_direction(&window->ray_list[i]);
+        render_wall_strip(window, wall_top_pixel, wall_bottom_pixel, wall_strip_height);
+        i++;
+    }
+}
+```
+Iterating over Rays: For each ray cast across the screen's width, the distance to the wall is corrected, and the height of the wall strip is determined.\
+Rendering: After calculating the top and bottom positions for the wall, and determining the correct texture, the strip is rendered to the screen.
+
+This process allows the engine to render walls in a 3D space, providing a realistic first-person view.
+By calculating the correct distances, wall heights, and mapping textures appropriately,\
+the engine produces a smooth and accurate visual representation of the player's surroundings.
