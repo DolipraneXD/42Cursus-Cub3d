@@ -150,7 +150,7 @@ By combining these calculations, the player can move in any direction depending 
 
 Wall_Height_and_Projection
 
-In this raycasting, the wall rendering process follows a series of calculations and steps to accurately draw walls based on the player's perspective. This explanation breaks down the steps involved in rendering walls in a 3D environment:\
+In this raycasting, the wall rendering process follows a series of calculations and steps to accurately draw walls based on the player's perspective. This explanation breaks down the steps involved in rendering walls in a 3D environment:
 1. Correcting the Distance for Fisheye Effect\
 
 When casting rays, the distance calculated for each ray needs to be adjusted to account for the fisheye effect. The calculate_correct_distance function multiplies the distance by the cosine of the difference between the ray’s angle and the player’s rotation angle:
@@ -160,7 +160,7 @@ void calculate_correct_distance(t_window *window, int i)
     window->ray_list[i].distance *= cos(window->ray_list[i].ray_angle - window->player.rotation_angle);
 }
 ```
-This ensures that walls further to the sides of the player's view aren't artificially elongated, maintaining the correct perspective.\
+This ensures that walls further to the sides of the player's view aren't artificially elongated, maintaining the correct perspective.
 
 2. Calculating Wall Strip Dimensions
 
@@ -177,7 +177,7 @@ double calculate_wall_bottom_pixel(double wall_strip_height)
 }
 ```
 The calculate_wall_top_pixel function determines where the top of the wall should be drawn, based on the screen height.\
-Similarly, calculate_wall_bottom_pixel determines the bottom position. This centers the wall vertically on the screen.\
+Similarly, calculate_wall_bottom_pixel determines the bottom position. This centers the wall vertically on the screen.
 
 3. Determining Wall Direction
 
@@ -203,7 +203,7 @@ int get_wall_direction(t_ray *ray)
     }
 }
 ```
-This helps in selecting the correct texture for rendering based on the wall’s direction and whether it was hit horizontally or vertically.\
+This helps in selecting the correct texture for rendering based on the wall’s direction and whether it was hit horizontally or vertically.
 
 4. Mapping Textures to Walls
 
@@ -217,7 +217,7 @@ double get_initial_x(t_ray *ray)
         return ((int)ray->wall_hit_y % TILE_SIZE);
 }
 ```
-Depending on whether the wall was hit horizontally or vertically, this function calculates the correct starting X-coordinate for the texture.\
+Depending on whether the wall was hit horizontally or vertically, this function calculates the correct starting X-coordinate for the texture.
 
 5. Rendering the Wall Strip\
 
@@ -241,7 +241,7 @@ void render_wall_strip(t_window *window, double wall_top_pixel, double wall_bott
     }
 }
 ```
-This function calculates the texture’s X and Y coordinates and maps them onto the correct screen pixels, ensuring the texture is applied smoothly across the vertical strip.\
+This function calculates the texture’s X and Y coordinates and maps them onto the correct screen pixels, ensuring the texture is applied smoothly across the vertical strip.
 
 6. Main Wall Rendering Loop
 
