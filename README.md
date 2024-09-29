@@ -4,6 +4,10 @@
 
 I'm excited to share that I’ve successfully completed my raycasting project, scoring a perfect 125/125! This project provided a deep dive into the mathematical principles of computer graphics, particularly focused on raycasting using angles. Below, I’ll share the detailed breakdown of how I used angles to bring this project to life.
 
+
+https://github.com/user-attachments/assets/3af640bc-b4d6-4d5d-8284-c40abd771bf2
+
+
 # Table of Contents
 
 - [Player Initialization and Movement](#Player-Initialization-and-Movement)
