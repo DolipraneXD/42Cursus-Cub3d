@@ -146,7 +146,7 @@ In a circular motion (or rotation), the cosine and sine functions are used to br
 
 By combining these calculations, the player can move in any direction depending on their orientation, providing realistic movement mechanics in the 2D space.\
 
-##Rendering Walls
+#Rendering Walls
 Wall_Height_and_Projection\
 
 In this raycasting, the wall rendering process follows a series of calculations and steps to accurately draw walls based on the player's perspective. This explanation breaks down the steps involved in rendering walls in a 3D environment:\
