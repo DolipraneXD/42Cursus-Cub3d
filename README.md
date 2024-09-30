@@ -11,7 +11,7 @@ https://github.com/user-attachments/assets/3af640bc-b4d6-4d5d-8284-c40abd771bf2
 # Table of Contents
 
 - [Player Initialization and Movement](#Player-Initialization-and-Movement)
-- [Raycasting Mechanics](#Raycasting_Mechanics)
+- [Raycasting Mechanics](#Raycasting-Mechanics)
   - [Horizontal and Vertical Intersections](#Horizontal_and_Vertical_Intersections)
   - [Distance Calculation and Fisheye Correction](#Distance_Calculation_and_Fisheye_Correction)
 - [Floor and Ceiling Rendering](#Floor_and_Ceiling_Rendering)
@@ -145,7 +145,29 @@ In a circular motion (or rotation), the cosine and sine functions are used to br
     sin(rotation_angle) gives the proportion of movement along the Y-axis.
 
 By combining these calculations, the player can move in any direction depending on their orientation, providing realistic movement mechanics in the 2D space.\
+## Raycasting Mechanics
+**What is Raycasting?**
 
+Raycasting is a computational technique used to simulate 3D environments in a 2D space, commonly used in early 3D games like Wolfenstein 3D or in projects like Cub3d. The basic idea behind raycasting is to "cast" rays from the player's viewpoint in the direction they are looking to detect objects (usually walls) and determine how far away they are. These rays are cast at different angles, covering the player's field of view (FOV).
+
+```c
+void	rays_casting(t_window *window)
+{
+	double	angle;
+	int		i;
+
+	i = 0;
+	angle = normalize_angle(window->player.rotation_angle) - \
+		(window->fov_angle / 2);
+	while (i < WIDTH)
+	{
+		window->ray_list[i].ray_angle = normalize_angle(angle);
+		ray_cast(&window->ray_list[i], window);
+		i++;
+		angle += window->fov_angle / WIDTH;
+	}
+}
+```
 ## Rendering Walls
 
 Wall_Height_and_Projection
