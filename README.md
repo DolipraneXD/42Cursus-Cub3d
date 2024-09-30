@@ -12,12 +12,12 @@ https://github.com/user-attachments/assets/3af640bc-b4d6-4d5d-8284-c40abd771bf2
 
 - [Player Initialization and Movement](#Player-Initialization-and-Movement)
 - [Raycasting Mechanics](#Raycasting-Mechanics)
-  - [Horizontal and Vertical Intersections](#Horizontal_and_Vertical_Intersections)
-  - [Distance Calculation and Fisheye Correction](#Distance_Calculation_and_Fisheye_Correction)
-- [Floor and Ceiling Rendering](#Floor_and_Ceiling_Rendering)
-- [Rendering Walls](#Rendering_Walls)
-  - [Wall Height and Projection](#Wall_Height_and_Projection)
-  - [Texture Mapping](#Texture_Mapping)
+  - [Horizontal and Vertical Intersections](#Horizontal-and-Vertical-Intersections)
+  - [Distance Calculation and Fisheye Correction](#Distance-Calculation-and-Fisheye-Correction)
+- [Floor and Ceiling Rendering](#Floor-and-Ceiling-Rendering)
+- [Rendering Walls](#Rendering-Walls)
+  - [Wall Height and Projection](#Wall-Height-and-Projection)
+  - [Texture Mapping](#Texture-Mapping)
 
 
 ## Player Initialization and Movement
@@ -170,7 +170,105 @@ void	rays_casting(t_window *window)
 ```
 This function casts rays for the entire screen (or viewport) by iterating through each column of pixels.
 It loops through all rays, starting at the left edge of the screen and moving to the right. For each ray, it calculates the corresponding angle and calls ray_cast to perform the raycasting for that angle. The angle of the ray is adjusted in each iteration based on the field of view (FOV) and screen width (WIDTH).
-![Alt text](https://github.com/DolipraneXD/42Cursus-Cub3d/issues/1#issue-2555989096)
+
+![ray](https://github.com/user-attachments/assets/629548f0-31bd-44e0-bc13-2fe7a38e1bf0)
+
+now we need to detect where the player is facing, that will help us in raycasting process.
+
+![ray_facing](https://github.com/user-attachments/assets/bb94b5f7-71e9-4ad3-b4b4-91d776814769)
+```c
+if (ray->ray_angle > 0 && ray->ray_angle < M_PI)
+	ray->is_facing_down = true;
+else
+	ray->is_facing_down = false;
+ray->is_facing_up = !ray->is_facing_down;
+if (ray->ray_angle < 0.5 * M_PI || ray->ray_angle > 1.5 * M_PI)
+	ray->is_facing_right = true;
+else
+	ray->is_facing_right = false;
+ray->is_facing_left = !ray->is_facing_right;
+```
+## Horizontal and Vertical Intersections
+
+- **Horizontal Intersections**
+  
+horizontal intersection refers to the point where a ray intersects with the horizontal lines (grid cells) in the map. These intersections are critical for determining where a wall is hit and thus how far the player is from that wall along the horizontal axis.
+
+![Yfirst_intercept](https://github.com/user-attachments/assets/1149b33b-f294-467d-9fb8-cc93ed89ba5d)
+  
+![horizonta_imter](https://github.com/user-attachments/assets/12672581-1cef-4ee7-b85c-66dd2bb72312)
+
+This calculation allows the ray to "step" from one horizontal line to the next, checking for intersections with walls as it moves horizontally across the grid. The combination of xinter and yinter provides the intersection points, and xstep and ystep allow the ray to advance through the map grid in the appropriate direction.
+
+- **Vertical Intersections**
+  
+we apply the same process for the vertical 
+
+![Vertical_Intersection](https://github.com/user-attachments/assets/3e2b0b52-edd2-48b1-a972-e20c1ef2274a)
+
+## Distance Calculation and Fisheye Correction
+
+here we will calcule the distance fom the player to the point where we hit the wall for both horizontal and verical, and select the closest one that will be our distance.
+
+![DistancetoWall](https://github.com/user-attachments/assets/e0d40da0-7a45-488e-b649-456f636ba3ee)
+
+```c
+horz_distance = INT_MAX;
+vert_distance = INT_MAX;
+if (find_h_wall)
+	horz_distance = calc_distance(window->player.x, window->player.y,ray->wall_hit_x, ray->wall_hit_y);
+if (find_v_wall)
+	vert_distance = calc_distance(window->player.x, window->player.y,ray->wall_hit_x_ver, ray->wall_hit_y_ver);
+if (horz_distance >= vert_distance)
+	ray->wall_hit_x = ray->wall_hit_x_ver;
+if (horz_distance >= vert_distance)
+	ray->wall_hit_y = ray->wall_hit_y_ver;
+if (horz_distance <= vert_distance)
+	ray->distance = horz_distance;
+else
+	ray->distance = vert_distance;
+ray->was_hit_horz = (vert_distance > horz_distance);
+```
+
+- **Fisheye Correction**
+  
+This function adjusts the distance for each ray by compensating for the angle between the ray's direction and the player's viewpoint. This ensures that the walls are rendered at their true size and prevents visual distortions caused by the fish-eye effect.
+
+  ```c
+void	calculate_correct_distance(t_window *window, int i)
+{
+	window->ray_list[i].distance *= cos(window->ray_list[i].ray_angle \
+		- window->player.rotation_angle);
+}
+  ```
+
+## Floor and Ceiling Rendering
+
+This function efficiently renders a simple floor and ceiling background by dividing the screen in half and filling each part with a predefined color.
+
+```c
+void	draw_floor_ceiling(t_window *window)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			if (y < HEIGHT / 2)
+				mlx_put_pixel(window->img, x, y, window->floor_color);
+			else
+				mlx_put_pixel(window->img, x, y, window->ceiling_color);
+			x++;
+		}
+		y++;
+	}
+}
+```
+
 
 ## Rendering Walls
 
