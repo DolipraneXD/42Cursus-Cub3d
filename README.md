@@ -2,7 +2,7 @@
 
 🌟 Because minecraft aren’t 3D enough is our cub3D project that has finish with 125/125 mark 🌟
 
-I'm excited to share that I’ve successfully completed my raycasting project, scoring a perfect 125/125! This project provided a deep dive into the mathematical principles of computer graphics, particularly focused on raycasting using angles. Below, I’ll share the detailed breakdown of how I used angles to bring this project to life.
+we are excited to share that we successfully completed our raycasting project, scoring a perfect 125/125! This project provided a deep dive into the mathematical principles of computer graphics, particularly focused on raycasting using angles. Below, we share the detailed breakdown of how we used angles to bring this project to life.
 
 
 https://github.com/user-attachments/assets/3af640bc-b4d6-4d5d-8284-c40abd771bf2
@@ -275,7 +275,7 @@ void	draw_floor_ceiling(t_window *window)
 Wall_Height_and_Projection
 
 In this raycasting, the wall rendering process follows a series of calculations and steps to accurately draw walls based on the player's perspective. This explanation breaks down the steps involved in rendering walls in a 3D environment:
-1. Correcting the Distance for Fisheye Effect\
+1. Correcting the Distance for Fisheye Effect
 
 When casting rays, the distance calculated for each ray needs to be adjusted to account for the fisheye effect. The calculate_correct_distance function multiplies the distance by the cosine of the difference between the ray’s angle and the player’s rotation angle:
 ```c
