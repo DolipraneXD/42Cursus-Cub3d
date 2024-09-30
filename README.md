@@ -168,6 +168,9 @@ void	rays_casting(t_window *window)
 	}
 }
 ```
+This function casts rays for the entire screen (or viewport) by iterating through each column of pixels.
+It loops through all rays, starting at the left edge of the screen and moving to the right. For each ray, it calculates the corresponding angle and calls ray_cast to perform the raycasting for that angle. The angle of the ray is adjusted in each iteration based on the field of view (FOV) and screen width (WIDTH).
+
 ## Rendering Walls
 
 Wall_Height_and_Projection
