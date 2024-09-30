@@ -103,7 +103,7 @@ calculates the new position of the player (new_x and new_y) based on their curre
 Explanation of Movement\
 
 In 2D games with raycasting or similar mechanics, movement is typically calculated based on the player's current facing direction (their rotation angle) and how far they want to move. The player can move forward or backward (walking) and left or right (strafing), but because the player can rotate, you need to adjust the movement direction using trigonometry.\
-Player Movement Directions:\
+Player Movement Directions:
 
     Forward/Backward Movement (move_step):
     This represents how much the player is moving in the direction they are currently facing, whether forward or backward.
@@ -343,7 +343,7 @@ double get_initial_x(t_ray *ray)
 ```
 Depending on whether the wall was hit horizontally or vertically, this function calculates the correct starting X-coordinate for the texture.
 
-5. Rendering the Wall Strip\
+5. Rendering the Wall Strip
 
 The render_wall_strip function takes the calculated values and draws the wall strip for each ray. It loops through each pixel on the screen from the top of the wall to the bottom, fetching the correct texture pixel and drawing it to the screen:
 ```c
